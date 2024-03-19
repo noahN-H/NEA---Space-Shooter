@@ -1,7 +1,6 @@
 import pygame
 import classes
-import random
-import math
+
 
 
 # variables
