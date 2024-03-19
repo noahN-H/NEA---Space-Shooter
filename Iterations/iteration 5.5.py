@@ -275,7 +275,7 @@ def mainGame():
             if time%5000 == 0 and len(enemyList) < 5:
                 print("hello")
                 pCoords = player.getCoords()
-                newlvl1Enemy = classes.enemy(yellow,1, 1, 45, 45)
+                newlvl1Enemy = classes.enemy(yellow, 5, 1, 1, 45, 45)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
                 enemyList.append(newlvl1Enemy)
                 
