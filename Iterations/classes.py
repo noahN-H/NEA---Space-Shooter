@@ -45,7 +45,7 @@ class enemy():
         self.EyPos = self.EyPos + PyPos
         
         
-        self.rect = pygame.rect(self.ExPos, self.EyPos,self.Ew,self.El)
+        self.rect = pygame.Rect(self.ExPos, self.EyPos,self.Ew,self.El)
  
     def eMove(self):
         self.ExPos = self.ExPos + self.ExVel
@@ -53,6 +53,9 @@ class enemy():
         
     def eDraw (self, screen):
         pygame.draw.rect(screen, self.colour, self.rect)
+
+    def getRekt(self):
+        return self.rect
         
         
 #Button class and functionality
