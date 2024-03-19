@@ -29,8 +29,8 @@ class enemy():
         self.Evel = Evel
         self.Edam = Edam
         self.Ehp = Ehp        
-        self.Pw = Ew
-        self.Pl = El
+        self.Ew = Ew
+        self.El = El
         self.rect = None
     
     def eSpawn(self, PxPos, PyPos): 
