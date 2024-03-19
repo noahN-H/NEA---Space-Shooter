@@ -281,8 +281,8 @@ def mainGame():
                 
         
         for enemy in enemyList:
-            enemy.eDraw()
-            if pygame.Rect.colliderect(playerRect, enemy.getRekt):
+            enemy.eDraw(screen_1)
+            if pygame.Rect.colliderect(playerRect, enemy.getRekt()):
                 playerHP = playerHP - 1
                 
                 enemyList.remove(enemy)            
