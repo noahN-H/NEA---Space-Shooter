@@ -19,8 +19,27 @@ class player():
         return self.xPos, self.yPos 
     
     def updateCoords(self, newPx, newPy):
-        self.Px = newPx
-        self.Py = newPy
+        self.xPos = newPx
+        self.yPos = newPy
+        
+
+    def pMovement(self):
+        #Player Movement    
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a] and self.xPos > self.vel:
+            self.xPos -= self.vel
+
+        if keys[pygame.K_d] and self.xPos <= (990) - self.Pw: # stops the player from moving 10px away from the edge of the screen
+            self.xPos += self.vel
+
+        if keys[pygame.K_w] and self.yPos > self.vel:
+            self.yPos -= self.vel
+
+        if keys[pygame.K_s] and player.yPos <= (740) - self.Pw: # stops the player from moving 10px away from the edge of the screen
+            player.yPos += player.vel
+            
+
         
 
 class enemy():

@@ -247,6 +247,11 @@ def mainGame():
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,1,3,45,45) #initalises the player
 
+
+    keys = pygame.key.get_pressed()
+    
+    if keys[pygame.K_ESCAPE]:
+        pauseMenu()    
     
     
     while True:
@@ -300,7 +305,8 @@ def mainGame():
                 playerHP = playerHP - enemy.Edam
                 enemyList.remove(enemy)
                 lifeLost()
-                player.updateCoords(500, 375)
+                del player
+                pygame.draw.rect(screen_1, (lBlue), playerRect)
                 print("hello 2")
   
                 
@@ -345,7 +351,7 @@ def mainGame():
                     
         pygame.display.update()
     
-        pMovement(player) 
+        player.pMovement() 
 
 def lifeLost():
     while True:
@@ -353,25 +359,6 @@ def lifeLost():
         pygame.time.wait(2000)
         break
 
-def pMovement(player):
-    clock.tick(60)
-    #Player Movement    
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_a] and player.xPos > player.vel:
-        player.xPos -= player.vel
-
-    if keys[pygame.K_d] and player.xPos <= (width - 10) - player.Pw: # stops the player from moving 10px away from the edge of the screen
-        player.xPos += player.vel
-
-    if keys[pygame.K_w] and player.yPos > player.vel:
-        player.yPos -= player.vel
-
-    if keys[pygame.K_s] and player.yPos <= (height - 10) - player.Pw: # stops the player from moving 10px away from the edge of the screen
-        player.yPos += player.vel
-        
-    if keys[pygame.K_ESCAPE]:
-        pauseMenu()
 
 def gameover():
     start_time = pygame.time.get_ticks()
