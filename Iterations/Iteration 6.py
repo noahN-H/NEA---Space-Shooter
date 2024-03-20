@@ -259,35 +259,35 @@ def mainGame():
         pygame.draw.rect(screen_1, (lBlue), playerRect)
 
         if difficulty(time) == 1: # for the first 30 seconds this is what is run
-            if time%5000 == 0 and len(enemyList) < 5: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
+            if time%1000 == 0 and len(enemyList) < 10: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
-                newlvl1Enemy = classes.enemy(yellow, 2, 1, 1, 45, 45) #instatiates the enemy
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45) #instatiates the enemy
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1]) #spawns in the enemy centred at the players location
                 enemyList.append(newlvl1Enemy) #adds the enemy to the enemy list to keep track of how many enemies are on the screem
                 
         
         if difficulty(time) == 2:
-            if time%5000 == 0 and len(enemyList) < 7:
+            if time%100 == 0 and len(enemyList) < 10:
                 pCoords = player.getCoords()
-                newlvl1Enemy = classes.enemy(yellow, 2, 1, 1, 45, 45)
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl2Enemy = classes.enemy(orange, 2, 1, 1, 45, 45)
+                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45)
                 newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
                 
                 diff2List = [newlvl1Enemy, newlvl2Enemy] # allows for a choice between either a lvl1 or a lvl2 enemy to be drawn on the screen
                 enemyList.append(random.choice(diff2List))
         
         if difficulty(time) == 3:
-            if time%5000 == 0 and len(enemyList) < 10:
+            if time%1000 == 0 and len(enemyList) < 10:
                 pCoords = player.getCoords()
-                newlvl1Enemy = classes.enemy(yellow, 2, 1, 1, 45, 45)
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl2Enemy = classes.enemy(orange, 2, 1, 1, 45, 45)
+                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45)
                 newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 45, 45)
+                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 75, 75)
                 newlvl3Enemy.eSpawn(pCoords[0],pCoords[1])
                 
                 diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
@@ -302,20 +302,32 @@ def mainGame():
                 playerHP = playerHP - enemy.Edam
                 
                 enemyList.remove(enemy)
-       
+  
                 
             if enemy.eGetCoords()[0] >= 1000:
+                print("hello right")
                 enemyList.remove(enemy)
+                del enemy
             elif enemy.eGetCoords()[0] <= 0:
-                enemyList.remove(enemy)            
-            elif  enemy.eGetCoords()[1] >= 750:
-                enemyList.remove(enemy)            
-            elif   enemy.eGetCoords()[1] <= 0:
+                print("hello left")
                 enemyList.remove(enemy)
+                del enemy            
+            elif enemy.eGetCoords()[1] >= 750:
+                print("hello down")     
+                enemyList.remove(enemy)            
+                del enemy           
+            elif enemy.eGetCoords()[1] <= 0:
+                print("hello up")                
+                enemyList.remove(enemy)
+                del enemy
                 
                         
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
+            del playerRect
+                
+            playerRect = pygame.Rect(player.xPos, player.yPos, player.Pw, player.Pl)
+            pygame.draw.rect(screen_1, (lBlue), playerRect)        
             
         elif playerHP == 2:
 
@@ -340,6 +352,10 @@ def mainGame():
         pygame.display.update()
     
         pMovement(player) 
+
+def lifeLost():
+    pygame.screen
+
 
 def pMovement(player):
     clock.tick(60)
@@ -410,5 +426,5 @@ def pauseMenu():
 
 run = True
 while run:
-    titleScreen()
+    countThree()
 pygame.quit() 
