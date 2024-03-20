@@ -228,8 +228,11 @@ def countThree():
 
 def difficulty(time):
     difficulty = 0
+    
+    if time >=120000:
+        difficulty =  4
         
-    if time >= 60000:
+    elif time >= 60000:
         difficulty = 3
     
     elif time >= 30000:
@@ -246,7 +249,7 @@ def mainGame():
     enemyList = []
     
     gameStartTime = pygame.time.get_ticks()     
-    player = classes.player(500,375,5,1,3,45,45) #initalises the player
+    player = classes.player(500,375,5,3,45,45) #initalises the player
 
 
     keys = pygame.key.get_pressed()
@@ -265,14 +268,14 @@ def mainGame():
         pygame.draw.rect(screen_1, (lBlue), playerRect)
 
         if difficulty(time) == 1: # for the first 30 seconds this is what is run
-            if time%1000 == 0 and len(enemyList) < 10: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
+            if time%100 == 0 and len(enemyList) < 10: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45) #instatiates the enemy
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1]) #spawns in the enemy centred at the players location
                 enemyList.append(newlvl1Enemy) #adds the enemy to the enemy list to keep track of how many enemies are on the screem         
         
         if difficulty(time) == 2:
-            if time%100 == 0 and len(enemyList) < 10:
+            if time%100 == 0 and len(enemyList) < 12:
                 pCoords = player.getCoords()
                 newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
@@ -284,7 +287,7 @@ def mainGame():
                 enemyList.append(random.choice(diff2List))
         
         if difficulty(time) == 3:
-            if time%1000 == 0 and len(enemyList) < 10:
+            if time%100 == 0 and len(enemyList) < 15:
                 pCoords = player.getCoords()
                 newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
@@ -296,7 +299,22 @@ def mainGame():
                 newlvl3Enemy.eSpawn(pCoords[0],pCoords[1])
                 
                 diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
-                enemyList.append(random.choice(diff3List))        
+                enemyList.append(random.choice(diff3List))
+                
+        if difficulty(time) == 4:
+            if time%10 == 0 and len(enemyList) < 30:
+                pCoords = player.getCoords()
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
+                newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
+                
+                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45)
+                newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
+                
+                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 75, 75)
+                newlvl3Enemy.eSpawn(pCoords[0],pCoords[1])
+                
+                diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
+                enemyList.append(random.choice(diff3List))      
         
         for enemy in enemyList:
             enemy.eDraw(screen_1)
@@ -339,7 +357,7 @@ def mainGame():
 
             screen_1.blit(lifes1, (25,25)) 
             
-        elif playerHP == 0:
+        elif playerHP <= 0:
 
             gameoverTimer = pygame.time.wait(1000)
             if gameoverTimer > 1000:

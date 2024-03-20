@@ -7,11 +7,10 @@ clock = pygame.time.Clock()
         
 
 class player():
-    def __init__ (self, xPos, yPos, vel, dam, hp, Pw, Pl):        
+    def __init__ (self, xPos, yPos, vel, hp, Pw, Pl):        
         self.xPos = xPos
         self.yPos = yPos
         self.vel = vel
-        self.dam = dam
         self.hp = hp        
         self.Pw = Pw
         self.Pl = Pl
@@ -41,9 +40,6 @@ class player():
         if keys[pygame.K_s] and self.yPos <= (740) - self.Pw: # stops the player from moving 10px away from the edge of the screen
             self.yPos += self.vel
             
-
-        
-
 class enemy():
     def __init__ (self, colour, Evel, Edam, Ehp, Ew, El):
         self.colour = colour
@@ -60,7 +56,7 @@ class enemy():
         self.rect = None
     
     def eSpawn(self, PxPos, PyPos): 
-        radius = random.randint(250,500)
+        radius = random.randint(500,1000)
         self.ExPos = random.randint(-250,250)
         self.EyPos = (math.sqrt(radius**2 - self.ExPos**2) * random.choice([1,-1]))
         velRat = self.Evel/radius
@@ -87,6 +83,53 @@ class enemy():
     
     def eGetCoords(self):
         return self.ExPos, self.EyPos
+        
+
+class spaceLazer():
+    def __init__(self, LxPos, LyPos, lDam, lVel, lW, lL):
+        self.LxPos = 0
+        self.LyPos = 0
+        self.lDam = 0
+        self.lVel = 0
+        self.lW = 0
+        self.lL = 0
+        
+        self.LxPos = LxPos
+        self.LyPos = LyPos
+        self.lDam = lDam
+        self.lVel = lVel
+        self.lW = lW
+        self.lL = lL
+        
+    def lSpawn(self, PxPos, PyPos, mousePos):
+        mousePos = pygame.mouse.get_pos() 
+        self.ExPos = random.randint(-250,250)
+        self.EyPos = (math.sqrt(radius**2 - self.ExPos**2) * random.choice([1,-1]))
+        velRat = self.Evel/radius
+        
+        self.ExVel = self.ExPos * velRat
+        self.EyVel = self.EyPos * velRat
+        self.ExPos = self.ExPos + PxPos
+        self.EyPos = self.EyPos + PyPos
+        
+        
+        self.rect = pygame.Rect(self.ExPos, self.EyPos,self.Ew,self.El)
+ 
+    def lMove(self):
+        self.ExPos = self.ExPos - self.ExVel
+        self.EyPos = self.EyPos - self.EyVel
+        self.rect = pygame.Rect(self.ExPos, self.EyPos,self.Ew,self.El)
+        
+        
+    def lDraw (self, screen):
+        pygame.draw.rect(screen, self.colour, self.rect)
+
+    def getRektL(self):
+        return self.rect
+    
+    def lGetCoords(self):
+        return self.LxPos, self.LyPos
+            
         
         
 #Button class and functionality
