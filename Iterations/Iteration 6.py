@@ -241,6 +241,7 @@ def difficulty(time):
     return difficulty
     
 def mainGame():
+
     playerHP = 3
     enemyList = []
     
@@ -255,7 +256,7 @@ def mainGame():
     
     
     while True:
-        
+        clock.tick(60)
         time = pygame.time.get_ticks() - gameStartTime #resets a time at the time when the mainGame loop is run
         screen_1.blit(spaceBG,(0,0))
         
@@ -304,9 +305,9 @@ def mainGame():
                 print("Hello 1")
                 playerHP = playerHP - enemy.Edam
                 enemyList.remove(enemy)
-                lifeLost()
-                del player
-                pygame.draw.rect(screen_1, (lBlue), playerRect)
+                pygame.time.wait(2000)
+                enemyList.clear()
+                player.updateCoords(500, 375)
                 print("hello 2")
   
                 
@@ -350,7 +351,6 @@ def mainGame():
                 raise SystemExit
                     
         pygame.display.update()
-    
         player.pMovement() 
 
 def lifeLost():

@@ -3,6 +3,7 @@ import random
 import math
 
 
+clock = pygame.time.Clock()
         
 
 class player():
@@ -24,8 +25,9 @@ class player():
         
 
     def pMovement(self):
-        #Player Movement    
+        #Player Movement   
         keys = pygame.key.get_pressed()
+        clock.tick(60)
 
         if keys[pygame.K_a] and self.xPos > self.vel:
             self.xPos -= self.vel
@@ -36,8 +38,8 @@ class player():
         if keys[pygame.K_w] and self.yPos > self.vel:
             self.yPos -= self.vel
 
-        if keys[pygame.K_s] and player.yPos <= (740) - self.Pw: # stops the player from moving 10px away from the edge of the screen
-            player.yPos += player.vel
+        if keys[pygame.K_s] and self.yPos <= (740) - self.Pw: # stops the player from moving 10px away from the edge of the screen
+            self.yPos += self.vel
             
 
         
