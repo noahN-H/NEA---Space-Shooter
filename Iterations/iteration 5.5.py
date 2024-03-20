@@ -1,5 +1,6 @@
 import pygame
 import classes
+import random
 
 
 
@@ -229,10 +230,6 @@ def countThree():
 def difficulty(time):
     
     difficulty = 0
-#    gameTime = pygame.time.get_ticks()
-#    timeElapsed = gameTime - time
-
-
         
     if time >= 60000:
         difficulty = 3
@@ -252,58 +249,84 @@ def mainGame():
     
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,1,3,45,45) #initalises the player
-    
 
-
-#    lvl1EnemyRect = pygame.Rect(random.randint(50,950), random.randint(50,700), 45, 45) #initalises the enemies
-#    lvl2EnemyRect = pygame.Rect(random.randint(50,950), random.randint(50,700), 45, 45) #initalises the enemies
-#    lvl3EnemyRect = pygame.Rect(random.randint(50,950), random.randint(50,700), 50, 50) #initalises the enemies
     
     
     while True:
         
         time = pygame.time.get_ticks() - gameStartTime
         screen_1.blit(spaceBG,(0,0))
-      #  fullHealth = screen_1.blit(lifes3, (25,25)) # blits the health bar onto the screen
-      #  twoHealth = screen_1.blit(lifes2, (25,25))
-      #  oneHealth = screen_1.blit(lifes3, (25,25))        
+        
         
         playerRect = pygame.Rect(player.xPos, player.yPos, player.Pw, player.Pl) # drawing the player onto the screen
         pygame.draw.rect(screen_1, (lBlue), playerRect)
 
         if difficulty(time) == 1:
             if time%5000 == 0 and len(enemyList) < 5:
-                print("hello")
                 pCoords = player.getCoords()
-                newlvl1Enemy = classes.enemy(yellow, 5, 1, 1, 45, 45)
+                newlvl1Enemy = classes.enemy(yellow, 2, 1, 1, 45, 45)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
                 enemyList.append(newlvl1Enemy)
                 
         
+        if difficulty(time) == 2:
+            if time%5000 == 0 and len(enemyList) < 7:
+                pCoords = player.getCoords()
+                newlvl1Enemy = classes.enemy(yellow, 2, 1, 1, 45, 45)
+                newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
+                
+                newlvl2Enemy = classes.enemy(orange, 2, 1, 1, 45, 45)
+                newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
+                diff2List = [newlvl1Enemy, newlvl2Enemy]
+                enemyList.append(random.choice(diff2List))
+        
+        if difficulty(time) == 3:
+            if time%5000 == 0 and len(enemyList) < 10:
+                pCoords = player.getCoords()
+                newlvl1Enemy = classes.enemy(yellow, 2, 1, 1, 45, 45)
+                newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
+                
+                newlvl2Enemy = classes.enemy(orange, 2, 1, 1, 45, 45)
+                newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
+                
+                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 45, 45)
+                newlvl3Enemy.eSpawn(pCoords[0],pCoords[1])
+                diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
+                enemyList.append(random.choice(diff3List))        
+        
+        
+        
         for enemy in enemyList:
             enemy.eDraw(screen_1)
+            enemy.eMove()
             if pygame.Rect.colliderect(playerRect, enemy.getRekt()):
-                playerHP = playerHP - 1
+                playerHP = playerHP - enemy.Edam
                 
                 enemyList.remove(enemy)            
-             
-            
-
-            
-
+                
+            if enemy.eGetCoords()[0] > 1000:
+                enemyList.remove(enemy)
+            elif enemy.eGetCoords()[0] < 0:
+                enemyList.remove(enemy)            
+            elif  enemy.eGetCoords()[1] > 750:
+                enemyList.remove(enemy)            
+            elif   enemy.eGetCoords()[1] < 0:
+                enemyList.remove(enemy)
+                
+                        
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
             
         elif playerHP == 2:
-            del fullHealth
-            twoHealth = screen_1.blit(lifes2, (25,25))
+
+            screen_1.blit(lifes2, (25,25))
             
         elif playerHP == 1:
-            del twoHealth
-            oneHealth = screen_1.blit(lifes1, (25,25)) 
+
+            screen_1.blit(lifes1, (25,25)) 
             
         elif playerHP == 0:
-            del oneHealth
+
             screen_1.blit(lifes0, (25,25))
             gameoverTimer = pygame.time.wait(1000)
             if gameoverTimer > 1000:

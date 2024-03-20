@@ -34,7 +34,7 @@ class enemy():
         self.rect = None
     
     def eSpawn(self, PxPos, PyPos): 
-        radius = random.randint(50,100)
+        radius = random.randint(200,300)
         self.ExPos = random.randint(-50,50)
         self.EyPos = (math.sqrt(radius**2 - self.ExPos**2) * random.choice([1,-1]))
         velRat = self.Evel/radius
@@ -48,14 +48,19 @@ class enemy():
         self.rect = pygame.Rect(self.ExPos, self.EyPos,self.Ew,self.El)
  
     def eMove(self):
-        self.ExPos = self.ExPos + self.ExVel
-        self.EyPos = self.EyPos + self.EyVel
+        self.ExPos = self.ExPos - self.ExVel
+        self.EyPos = self.EyPos - self.EyVel
+        self.rect = pygame.Rect(self.ExPos, self.EyPos,self.Ew,self.El)
+        
         
     def eDraw (self, screen):
         pygame.draw.rect(screen, self.colour, self.rect)
 
     def getRekt(self):
         return self.rect
+    
+    def eGetCoords(self):
+        return self.ExPos, self.EyPos
         
         
 #Button class and functionality
