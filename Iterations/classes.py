@@ -17,6 +17,11 @@ class player():
     
     def getCoords(self):
         return self.xPos, self.yPos 
+    
+    def updateCoords(self, newPx, newPy):
+        self.Px = newPx
+        self.Py = newPy
+        
 
 class enemy():
     def __init__ (self, colour, Evel, Edam, Ehp, Ew, El):

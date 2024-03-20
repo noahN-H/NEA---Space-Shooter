@@ -49,7 +49,7 @@ numberThreeImage = pygame.image.load("Used Images/no 3.png").convert_alpha()
 threeLifesImage = pygame.image.load("Used Images/Threelifes.png").convert_alpha() 
 twoLifesImage  =  pygame.image.load("Used Images/Twolifes.png").convert_alpha() 
 oneLifeImage = pygame.image.load("Used Images/Onelife.png").convert_alpha() 
-zeroLifesImage = pygame.image.load("Used Images/Zerolifes.png").convert_alpha() 
+
 
 #Backgrounes
 spaceBG = pygame.image.load("Used Images/SpaceBG.png").convert_alpha()
@@ -86,7 +86,7 @@ number3 = pygame.transform.scale(numberThreeImage, (int(width * .5), (int(height
 lifes3 =pygame.transform.scale(threeLifesImage, (int(width * .2), (int(height * .125))))
 lifes2 =pygame.transform.scale(twoLifesImage, (int(width * .2), (int(height * .125))))
 lifes1 = pygame.transform.scale(oneLifeImage, (int(width * .2), (int(height * .125))))
-lifes0 = pygame.transform.scale(zeroLifesImage, (int(width * .2), (int(height * .125))))
+
 
 
 def titleScreen():
@@ -263,8 +263,7 @@ def mainGame():
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45) #instatiates the enemy
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1]) #spawns in the enemy centred at the players location
-                enemyList.append(newlvl1Enemy) #adds the enemy to the enemy list to keep track of how many enemies are on the screem
-                
+                enemyList.append(newlvl1Enemy) #adds the enemy to the enemy list to keep track of how many enemies are on the screem         
         
         if difficulty(time) == 2:
             if time%100 == 0 and len(enemyList) < 10:
@@ -293,15 +292,16 @@ def mainGame():
                 diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
                 enemyList.append(random.choice(diff3List))        
         
-        
-        
         for enemy in enemyList:
             enemy.eDraw(screen_1)
             enemy.eMove()
-            if pygame.Rect.colliderect(playerRect, enemy.getRekt()):
+            if pygame.Rect.colliderect(playerRect, enemy):
+                print("Hello 1")
                 playerHP = playerHP - enemy.Edam
-                
                 enemyList.remove(enemy)
+                lifeLost()
+                player.updateCoords(500, 375)
+                print("hello 2")
   
                 
             if enemy.eGetCoords()[0] >= 1000:
@@ -320,15 +320,10 @@ def mainGame():
                 print("hello up")                
                 enemyList.remove(enemy)
                 del enemy
-                
-                        
+                         
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
-            del playerRect
-                
-            playerRect = pygame.Rect(player.xPos, player.yPos, player.Pw, player.Pl)
-            pygame.draw.rect(screen_1, (lBlue), playerRect)        
-            
+
         elif playerHP == 2:
 
             screen_1.blit(lifes2, (25,25))
@@ -339,7 +334,6 @@ def mainGame():
             
         elif playerHP == 0:
 
-            screen_1.blit(lifes0, (25,25))
             gameoverTimer = pygame.time.wait(1000)
             if gameoverTimer > 1000:
                 gameover()
@@ -354,8 +348,10 @@ def mainGame():
         pMovement(player) 
 
 def lifeLost():
-    pygame.screen
-
+    while True:
+        screen_1.blit(spaceBG,(0,0))
+        pygame.time.wait(2000)
+        break
 
 def pMovement(player):
     clock.tick(60)
@@ -401,8 +397,8 @@ def pauseMenu():
         screen_1.blit(spaceBG,(0,0))
         
         if resumeButton.draw(screen_1) == True:
-            break
             print("Resume")
+            break
         
         if instructionsButtonPause.draw(screen_1) == True:
             instructionsScreen4Game()
