@@ -450,5 +450,5 @@ def pauseMenu():
 
 run = True
 while run:
-    countThree()
+    mainGame()
 pygame.quit() 
