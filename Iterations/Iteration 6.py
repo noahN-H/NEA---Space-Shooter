@@ -11,6 +11,7 @@ lBlue = (0,183,239)
 red = (237,28,36)
 orange = (255, 194, 14)
 yellow = (255,242,0)
+green =  (34,177,78)
 
 
 pygame.init()
@@ -247,6 +248,7 @@ def mainGame():
 
     playerHP = 3
     enemyList = []
+    lazerList=[]
     
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,3,45,45) #initalises the player
@@ -266,6 +268,27 @@ def mainGame():
         
         playerRect = pygame.Rect(player.xPos, player.yPos, player.Pw, player.Pl) # drawing the player onto the screen
         pygame.draw.rect(screen_1, (lBlue), playerRect)
+        
+
+        
+        for spaceLazer in lazerList:
+            spaceLazer.lMove()
+            spaceLazer.shoot(screen_1)
+            pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
+            spaceLazer = (1, 5, 5, 10)
+            if spaceLazer.lDraw ==True:
+                print("True")    
+                spaceLazer.lSpawn(pCoords[0],pCoords[1])
+                spaceLazer.lDraw(screen_1)
+                lazerList.append(spaceLazer)
+            
+            
+            if pygame.Rect.collidepoint(spaceLazer, enemy):
+                print("lazer collide")
+                enemyList.remove(enemy)
+                del enemy                
+                
+            
 
         if difficulty(time) == 1: # for the first 30 seconds this is what is run
             if time%100 == 0 and len(enemyList) < 10: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
