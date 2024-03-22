@@ -56,7 +56,7 @@ class enemy():
         self.rect = None
     
     def eSpawn(self, PxPos, PyPos): 
-        radius = random.randint(500,1000)
+        radius = random.randint(250,500)
         self.ExPos = random.randint(-250,250)
         self.EyPos = (math.sqrt(radius**2 - self.ExPos**2) * random.choice([1,-1]))
         velRat = self.Evel/radius
@@ -83,7 +83,6 @@ class enemy():
     
     def eGetCoords(self):
         return self.ExPos, self.EyPos
-        
 
 class spaceLazer():
     def __init__(self, LxPos, LyPos, lDam, lVel, lW, lL):
