@@ -46,7 +46,6 @@ numberTwoImage = pygame.image.load("Used Images/no 2.png").convert_alpha()
 numberThreeImage = pygame.image.load("Used Images/no 3.png").convert_alpha()
 
 #lifes Couter Images
-
 threeLifesImage = pygame.image.load("Used Images/Threelifes.png").convert_alpha() 
 twoLifesImage  =  pygame.image.load("Used Images/Twolifes.png").convert_alpha() 
 oneLifeImage = pygame.image.load("Used Images/Onelife.png").convert_alpha() 
@@ -268,27 +267,6 @@ def mainGame():
         
         playerRect = pygame.Rect(player.xPos, player.yPos, player.Pw, player.Pl) # drawing the player onto the screen
         pygame.draw.rect(screen_1, (lBlue), playerRect)
-        
-
-        
-        for spaceLazer in lazerList:
-            spaceLazer.lMove()
-            spaceLazer.shoot(screen_1)
-            pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
-            spaceLazer = (1, 5, 5, 10)
-            if spaceLazer.lDraw ==True:
-                print("True")    
-                spaceLazer.lSpawn(pCoords[0],pCoords[1])
-                spaceLazer.lDraw(screen_1)
-                lazerList.append(spaceLazer)
-            
-            
-            if pygame.Rect.collidepoint(spaceLazer, enemy):
-                print("lazer collide")
-                enemyList.remove(enemy)
-                del enemy                
-                
-            
 
         if difficulty(time) == 1: # for the first 30 seconds this is what is run
             if time%100 == 0 and len(enemyList) < 10: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
@@ -350,6 +328,12 @@ def mainGame():
                 enemyList.clear()
                 player.updateCoords(500, 375)
                 print("hello 2")
+                
+        for spaceLazer in lazerList:    
+            if pygame.Rect.colliderect(spaceLazer, enemy):
+                print("lazer collide")
+                enemyList.remove(enemy)
+                del enemy 
   
                 
             if enemy.eGetCoords()[0] >= 1000:
@@ -368,7 +352,20 @@ def mainGame():
                 print("hello up")                
                 enemyList.remove(enemy)
                 del enemy
-                         
+                
+        for event in pygame.event.get():        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print('mouse pressed')
+                spaceLazer = classes.spaceLazer(green, 1, 5, 5, 10)
+                pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
+                mousePos = pygame.mouse.get_pos()
+                mouseX = mousePos[0]
+                mouseY = mousePos[1]
+                print("True")    
+                spaceLazer.lSpawn(pCoords[0],pCoords[1],mouseX, mouseY)
+                spaceLazer.lDraw(screen_1)
+                lazerList.append(spaceLazer)
+                            
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
 
@@ -386,6 +383,8 @@ def mainGame():
             if gameoverTimer > 1000:
                 gameover()
                 
+        
+                
                 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -399,7 +398,6 @@ def lifeLost():
         screen_1.blit(spaceBG,(0,0))
         pygame.time.wait(2000)
         break
-
 
 def gameover():
     start_time = pygame.time.get_ticks()

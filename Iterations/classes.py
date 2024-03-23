@@ -66,7 +66,6 @@ class enemy():
         self.ExPos = self.ExPos + PxPos
         self.EyPos = self.EyPos + PyPos
         
-        
         self.rect = pygame.Rect(self.ExPos, self.EyPos,self.Ew,self.El)
  
     def eMove(self):
@@ -84,27 +83,28 @@ class enemy():
         return self.ExPos, self.EyPos
 
 class spaceLazer():
-    def __init__(self, lDam, lVel, lW, lL):
+    def __init__(self, colour, lVel, lDam, lW, lL):
+        self.colour = colour
         self.LxPos = 0
         self.LyPos = 0
-        self.lDam = 0
-        self.lVel = 0
-        self.lW = 0
-        self.lL = 0
-        self.rect = None
+        self.LxVel = 0
+        self.LyVel = 0
+
         
 
-        self.lDam = lDam
         self.lVel = lVel
+        self.lDam = lDam
         self.lW = lW
         self.lL = lL
+        self.rect = None
         
-    def lSpawn(self, PxPos, PyPos, mousePos):
-        mousePos = pygame.mouse.get_pos() 
-        self.LxPos = mousePos[0] - player.getCoords()[0]
-        self.LyPos = mousePos[1] - player.getCoords()[1]
-        radius = math.sqrt(self.LxPos**2 + self.LyPos**"") 
-        LvelRat = self.Lvel/radius
+    def lSpawn(self, PxPos, PyPos, mouseX, mouseY):
+        xGrad = mouseX - PxPos
+        yGrad = mouseY - PyPos
+        self.LxPos = xGrad
+        self.LyPos = yGrad
+        radius = math.sqrt(self.LxPos**2 + self.LyPos**2) 
+        LvelRat = self.lVel/radius
         
         self.LxVel = self.LxPos * LvelRat
         self.LyVel = self.LyPos * LvelRat
@@ -112,12 +112,12 @@ class spaceLazer():
         self.LyPos = self.LyPos + PyPos
         
         
-        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.Lw,self.Ll)
+        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.lW,self.lL)
  
     def lMove(self):
         self.LxPos = self.LxPos - self.LxVel
         self.LyPos = self.LyPos - self.LyVel
-        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.Lw,self.Ll)
+        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.lW,self.lL)
         
     def lDraw (self, screen):
         pygame.draw.rect(screen, self.colour, self.rect)
@@ -126,8 +126,8 @@ class spaceLazer():
         return self.rect
     
     def lGetmouseCoords(self):
-        mouseX = pygame.mouse.get_pos[0]
-        mouseY = pygame.mouse.get_pos[1]
+        mouseX = pygame.mouse.get_pos()[0]
+        mouseY = pygame.mouse.get_pos()[1]
         return mouseX, mouseY
     
             
