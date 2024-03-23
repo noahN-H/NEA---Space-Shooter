@@ -356,19 +356,19 @@ def mainGame():
                     enemyList.remove(enemy)
                     del enemy 
             
-            # checks if mouse buttons have been pressed    
-            for event in pygame.event.get():        
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    print('mouse pressed')
-                    spaceLazer = classes.spaceLazer(green, 1, 5, 5, 10)
-                    pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
-                    mousePos = pygame.mouse.get_pos()
-                    mouseX = mousePos[0]
-                    mouseY = mousePos[1]
-                    print("True")    
-                    spaceLazer.lSpawn(pCoords[0],pCoords[1],mouseX, mouseY)
-                    spaceLazer.lDraw(screen_1)
-                    lazerList.append(spaceLazer)
+        # checks if mouse buttons have been pressed    
+        for event in pygame.event.get():        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print('mouse pressed')
+                spaceLazer = classes.spaceLazer(green, 1, 5, 5, 10)
+                pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
+                mousePos = pygame.mouse.get_pos()
+                mouseX = mousePos[0]
+                mouseY = mousePos[1]
+                print("True")    
+                spaceLazer.lSpawn(pCoords[0],pCoords[1],mouseX, mouseY)
+                spaceLazer.lDraw(screen_1)
+                lazerList.append(spaceLazer)
                             
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
