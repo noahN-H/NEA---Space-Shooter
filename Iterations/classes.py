@@ -83,7 +83,7 @@ class enemy():
         return self.ExPos, self.EyPos
 
 class spaceLazer():
-    def __init__(self, colour, lVel, lDam, lW, lL):
+    def __init__(self, colour, lVel, lDam, lCentre, lRadius):
         self.colour = colour
         self.LxPos = 0
         self.LyPos = 0
@@ -92,8 +92,8 @@ class spaceLazer():
 
         self.lVel = lVel
         self.lDam = lDam
-        self.lW = lW
-        self.lL = lL
+        self.lCentre = lCentre
+        self.lRadius = lRadius
         self.rect = None
         
     def lSpawn(self, PxPos, PyPos, mouseX, mouseY):
@@ -109,13 +109,13 @@ class spaceLazer():
         self.LxPos = self.LxPos + PxPos
         self.LyPos = self.LyPos + PyPos
         
-        
-        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.lW,self.lL)
+    
+        self.rect = pygame.Rect(self.LxPos, self.LyPos, self.lCentre, self.lRadius)
  
     def lMove(self):
         self.LxPos = self.LxPos + self.LxVel
         self.LyPos = self.LyPos + self.LyVel
-        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.lW,self.lL)
+        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.lCentre, self.lRadius)
         
     def lDraw (self, screen):
         pygame.draw.rect(screen, self.colour, self.rect)

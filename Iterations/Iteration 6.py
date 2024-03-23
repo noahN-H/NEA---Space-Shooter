@@ -349,8 +349,9 @@ def mainGame():
                 
                 
             for spaceLazer in lazerList:
+                lCentre = (spaceLazer.LxPos, spaceLazer.LyPos)
                 spaceLazer.lMove()
-                lazerRect = pygame.draw.rect(screen_1, green, spaceLazer)    
+                lazerRect = pygame.draw.circle(screen_1, green, lCentre, spaceLazer.lRadius)    
                 for enemy in enemyList:
                     if pygame.Rect.colliderect(lazerRect,enemy):
                         print("lazer collide")
