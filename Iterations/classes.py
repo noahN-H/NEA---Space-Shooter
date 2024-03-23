@@ -96,19 +96,23 @@ class spaceLazer():
         self.lRadius = lRadius
         self.rect = None
         
-    def lSpawn(self, PxPos, PyPos):
-        self.rect = pygame.Rect(self.LxPos, self.LyPos, self.lCentre, self.lRadius)
- 
-    def lMove(self, PxPos, PyPos, mouseX, mouseY):
-        self.LxPos = mouseX - PxPos
-        self.LyPos = mouseY - PyPos
-        radius = math.sqrt(self.LxPos**2 + self.LyPos**2) 
-        LvelRat = self.lVel/radius
+    def lSpawn(self, PxPos, PyPos, mouseX, mouseY):
+        self.LxPos = PxPos
+        self.LyPos = PyPos
+        mouseRelXPos = PxPos - mouseX
+        mouseRelYPos = PyPos - mouseY
+        distance = math.sqrt(mouseRelXPos**2 + mouseRelYPos**2) 
+        lVelRat = self.lVel/distance
         
-        self.LxVel = self.LxPos * LvelRat
-        self.LyVel = self.LyPos * LvelRat
-        self.LxPos = self.LxPos + PxPos
-        self.LyPos = self.LyPos + PyPos
+        self.LxVel = mouseRelXPos * lVelRat
+        self.LyVel = mouseRelYPos * lVelRat
+        
+        self.rect = pygame.Rect(self.LxPos, self.LyPos, self.lCentre, self.lRadius)
+    
+    def lMove(self):
+        self.LxPos = self.LxPos - self.LxVel
+        self.LyPos = self.LyPos - self.LyVel
+        self.rect = pygame.Rect(self.LxPos, self.LyPos,self.lCentre,self.lRadius)
 
 
         
