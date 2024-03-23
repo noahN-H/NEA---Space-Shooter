@@ -248,6 +248,7 @@ def mainGame():
     playerHP = 3
     enemyList = []
     lazerList=[]
+    clicked = False
     
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,3,45,45) #initalises the player
@@ -335,7 +336,7 @@ def mainGame():
                 enemyList.remove(enemy)
                 del enemy
             elif enemy.eGetCoords()[0] <= 0:
-                print("hello left")
+                print("hello left") 
                 enemyList.remove(enemy)
                 del enemy            
             elif enemy.eGetCoords()[1] >= 750:
@@ -349,28 +350,31 @@ def mainGame():
                 
                 
             for spaceLazer in lazerList:
-                lCentre = (spaceLazer.LxPos, spaceLazer.LyPos)
-                spaceLazer.lMove()
-                lazerRect = pygame.draw.circle(screen_1, green, lCentre, spaceLazer.lRadius)    
-                for enemy in enemyList:
-                    if pygame.Rect.colliderect(lazerRect,enemy):
-                        print("lazer collide")
-                        enemyList.remove(enemy)
-                        del enemy 
-            
-        # checks if mouse buttons have been pressed    
-        for event in pygame.event.get():        
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print('mouse pressed')
-                spaceLazer = classes.spaceLazer(green, 1, 5, 5, 10)
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 mousePos = pygame.mouse.get_pos()
                 mouseX = mousePos[0]
                 mouseY = mousePos[1]
+                lCentre = (spaceLazer.LxPos, spaceLazer.LyPos)
+                spaceLazer.lMove(pCoords[0],pCoords[1], mouseX, mouseY)
+                lazerRect = pygame.draw.circle(screen_1, green, lCentre, spaceLazer.lRadius)    
+                
+-
+            
+        # checks if mouse buttons have been pressed    
+        for event in pygame.event.get():        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = True
+                print('mouse pressed')
+                spaceLazer = classes.spaceLazer(green, 1, 5, 5, 7.5)
+                pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 print("True")    
-                spaceLazer.lSpawn(pCoords[0],pCoords[1],mouseX, mouseY)
+                spaceLazer.lSpawn(pCoords[0],pCoords[1])
                 spaceLazer.lDraw(screen_1)
                 lazerList.append(spaceLazer)
+                
+                if clicked == True:
+                    event.type 
+                
                             
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
