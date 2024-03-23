@@ -351,10 +351,11 @@ def mainGame():
             for spaceLazer in lazerList:
                 spaceLazer.lMove()
                 lazerRect = pygame.draw.rect(screen_1, green, spaceLazer)    
-                if pygame.Rect.colliderect(lazerRect,   enemy):
-                    print("lazer collide")
-                    enemyList.remove(enemy)
-                    del enemy 
+                for enemy in enemyList:
+                    if pygame.Rect.colliderect(lazerRect,enemy):
+                        print("lazer collide")
+                        enemyList.remove(enemy)
+                        del enemy 
             
         # checks if mouse buttons have been pressed    
         for event in pygame.event.get():        
