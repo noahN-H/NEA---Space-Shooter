@@ -83,8 +83,8 @@ number2 = pygame.transform.scale(numberTwoImage, (int(width * .5), (int(height *
 number3 = pygame.transform.scale(numberThreeImage, (int(width * .5), (int(height * .9))))   
 
 #Lifes Counter
-lifes3 =pygame.transform.scale(threeLifesImage, (int(width * .2), (int(height * .125))))
-lifes2 =pygame.transform.scale(twoLifesImage, (int(width * .2), (int(height * .125))))
+lifes3 = pygame.transform.scale(threeLifesImage, (int(width * .2), (int(height * .125))))
+lifes2 = pygame.transform.scale(twoLifesImage, (int(width * .2), (int(height * .125))))
 lifes1 = pygame.transform.scale(oneLifeImage, (int(width * .2), (int(height * .125))))
 
 
@@ -349,16 +349,28 @@ def mainGame():
                 del enemy
                 
                 
-            for spaceLazer in lazerList:
-                pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
-                mousePos = pygame.mouse.get_pos()
-                mouseX = mousePos[0]
-                mouseY = mousePos[1]
-                lCentre = (spaceLazer.LxPos, spaceLazer.LyPos)
-                spaceLazer.lMove(pCoords[0],pCoords[1], mouseX, mouseY)
-                lazerRect = pygame.draw.circle(screen_1, green, lCentre, spaceLazer.lRadius)    
+        for spaceLazer in lazerList:
+            pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
+            mousePos = pygame.mouse.get_pos()
+            mouseX = mousePos[0]
+            mouseY = mousePos[1]
+            lCentre = (spaceLazer.LxPos, spaceLazer.LyPos)
+            spaceLazer.lMove(pCoords[0],pCoords[1], mouseX, mouseY)
+            lazerRect = pygame.draw.circle(screen_1, green, lCentre, spaceLazer.lRadius)
+            
+            for enemy in enemyList:
+                if pygame.Rect.colliderect(lazerRect, enemy):
+                    del enemy
+                    print("Hello 3")
+                    enemy.Ehp = enemy.Ehp - spaceLazer.lDam
+                    if enemy.Ehp >= 0:
+                        del enemy
+                        enemyList.remove(enemy)
+                        print("hello 4")
+            
                 
--
+                
+
             
         # checks if mouse buttons have been pressed    
         for event in pygame.event.get():        

@@ -248,10 +248,10 @@ def mainGame():
     playerHP = 3
     enemyList = []
     lazerList=[]
+    clicked = False
     
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,3,45,45) #initalises the player
-    spaceLazer = classes.spaceLazer(green, 1, 5, 5, 10)
 
 
     keys = pygame.key.get_pressed()
@@ -267,7 +267,6 @@ def mainGame():
         
         
         playerRect = pygame.Rect(player.xPos, player.yPos, player.Pw, player.Pl) # drawing the player onto the screen
-        lazerRect = pygame.Rect(spaceLazer)
         pygame.draw.rect(screen_1, (lBlue), playerRect)
 
         if difficulty(time) == 1: # for the first 30 seconds this is what is run
@@ -318,8 +317,7 @@ def mainGame():
                 
                 diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
                 enemyList.append(random.choice(diff3List))      
-                
-
+        
         for enemy in enemyList:
             enemy.eDraw(screen_1)
             enemy.eMove()
@@ -329,17 +327,16 @@ def mainGame():
                 enemyList.remove(enemy)
                 pygame.time.wait(2000)
                 enemyList.clear()
-                lazerList.clear()
                 player.updateCoords(500, 375)
                 print("hello 2")
+  
                 
-                # Used to despawn enemies    
             if enemy.eGetCoords()[0] >= 1000:
                 print("hello right")
                 enemyList.remove(enemy)
                 del enemy
             elif enemy.eGetCoords()[0] <= 0:
-                print("hello left")
+                print("hello left") 
                 enemyList.remove(enemy)
                 del enemy            
             elif enemy.eGetCoords()[1] >= 750:
@@ -347,33 +344,37 @@ def mainGame():
                 enemyList.remove(enemy)            
                 del enemy           
             elif enemy.eGetCoords()[1] <= 0:
-                    print("hello up")                
-                    enemyList.remove(enemy)
-                    del enemy
+                print("hello up")                
+                enemyList.remove(enemy)
+                del enemy
                 
-        for spaceLazer in lazerList:
-            spaceLazer.lMove()    
-        if pygame.Rect.colliderect(lazerRect, enemy):
-            print("lazer collide")
-#                enemy.Ehp - spaceLazer.lDam
-#                if enemy.Ehp == 0:
-            enemyList.remove(enemy)
-            del enemy 
-  
-        # Checks if thhe mouse button has been pressed         
-        for event in pygame.event.get():        
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print('mouse pressed')
-
+                
+            for spaceLazer in lazerList:
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 mousePos = pygame.mouse.get_pos()
                 mouseX = mousePos[0]
                 mouseY = mousePos[1]
+                lCentre = (spaceLazer.LxPos, spaceLazer.LyPos)
+                spaceLazer.lMove(pCoords[0],pCoords[1], mouseX, mouseY)
+                lazerRect = pygame.draw.circle(screen_1, green, lCentre, spaceLazer.lRadius)    
+                
+
+            
+        # checks if mouse buttons have been pressed    
+        for event in pygame.event.get():        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = True
+                print('mouse pressed')
+                spaceLazer = classes.spaceLazer(green, 1, 5, 5, 7.5)
+                pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 print("True")    
-                spaceLazer.lSpawn(pCoords[0],pCoords[1],mouseX, mouseY)
+                spaceLazer.lSpawn(pCoords[0],pCoords[1])
+                spaceLazer.lDraw(screen_1)
                 lazerList.append(spaceLazer)
-
-
+                
+                if clicked == True:
+                    event.type 
+                
                             
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
@@ -391,6 +392,8 @@ def mainGame():
             gameoverTimer = pygame.time.wait(1000)
             if gameoverTimer > 1000:
                 gameover()
+                
+        
                 
                 
         for event in pygame.event.get():
