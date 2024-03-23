@@ -118,8 +118,7 @@ class spaceLazer():
         self.rect = pygame.Rect(self.LxPos, self.LyPos,self.lW,self.lL)
         
     def lDraw (self, screen):
-        lazerRect = pygame.draw.rect(screen, self.colour, self.rect)
-        return lazerRect
+        pygame.draw.rect(screen, self.colour, self.rect)
 
     def getRektL(self):
         return self.rect
