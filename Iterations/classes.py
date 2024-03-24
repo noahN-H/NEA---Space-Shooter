@@ -135,9 +135,7 @@ class spaceLazer():
         mouseX = pygame.mouse.get_pos()[0]
         mouseY = pygame.mouse.get_pos()[1]
         return mouseX, mouseY
-    
             
-        
         
 #Button class and functionality
 

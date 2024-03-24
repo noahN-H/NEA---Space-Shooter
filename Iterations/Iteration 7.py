@@ -1,7 +1,7 @@
 import pygame
 import classes
 import random
-from os import path
+import os
 
 
 
@@ -87,6 +87,9 @@ lifes3 = pygame.transform.scale(threeLifesImage, (int(width * .2), (int(height *
 lifes2 = pygame.transform.scale(twoLifesImage, (int(width * .2), (int(height * .125))))
 lifes1 = pygame.transform.scale(oneLifeImage, (int(width * .2), (int(height * .125))))
 
+#Fonts
+defultFont = pygame.font.Font("freesansbold.ttf", 32)
+
 
 
 def titleScreen():
@@ -169,7 +172,17 @@ def instructionsScreen4Game():
 
         pygame.display.update() 
 
+def leaderboard(points): 
+    lbFileA = open("LEADERBOARD.txt","a")
+    lbFileA.write(str(points))
+    
+    lbFileR  = open("LEADERBOARD.txt","r")
+    print(lbFileR)
+            
 
+    
+
+    
 def countOne():
     start_time = pygame.time.get_ticks() #gets the inital time when the function is run
     while True:
@@ -254,10 +267,12 @@ def mainGame():
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,3,45,45) #initalises the player
     
+    running = True
     
     points = 0
+
     
-    while True:
+    while running == True:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             pauseMenu() 
@@ -379,10 +394,7 @@ def mainGame():
                 spaceLazer.lDraw(screen_1)
                 lazerList.append(spaceLazer)
                 
-                if clicked == True:
-                    event.type 
-                
-                            
+        showScore(750, 25, points)            
         if playerHP  == 3:
             screen_1.blit(lifes3, (25,25))
 
@@ -396,40 +408,50 @@ def mainGame():
         elif playerHP <= 0:
             gameoverTimer = pygame.time.wait(1000)
             if gameoverTimer > 1000:
-                gameover()
-            
+                running = False
+                
                 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 raise SystemExit
                     
         pygame.display.update()
-        player.pMovement() 
+        player.pMovement()
+    gameover()
 
+    
+    
 def lifeLost():
     while True:
         screen_1.blit(spaceBG,(0,0))
         pygame.time.wait(2000)
         break
 
+def showScore(x, y, points):
+    scoreRender = defultFont.render("Score: " + str(points), True, white)
+    screen_1.blit(scoreRender, (x, y))
+    
 def gameover():
     start_time = pygame.time.get_ticks()
-    while True:
+    running = True
+    while running == True:
         screen_1.blit(spaceBG,(0,0))
         
         screen_1.blit(Gameover, (250, 250)) # blits gameover onto the screen
         
         current_time = pygame.time.get_ticks()
         if current_time - start_time >= 5000:  
-            mainMenu() 
-            
+            running ==  False
         #event handler
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 raise SystemExit
             
         pygame.display.update()
-                                 
+    
+    print("anything")
+                  
 def pauseMenu():
     while True: 
         
