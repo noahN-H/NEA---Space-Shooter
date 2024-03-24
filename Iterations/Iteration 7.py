@@ -88,7 +88,7 @@ lifes2 = pygame.transform.scale(twoLifesImage, (int(width * .2), (int(height * .
 lifes1 = pygame.transform.scale(oneLifeImage, (int(width * .2), (int(height * .125))))
 
 #Fonts
-defultFont = pygame.font.Font("freesansbold.ttf", 32)
+defultFont = pygame.font.Font("freesansbold.ttf", 16)
 
 
 
@@ -123,10 +123,11 @@ def mainMenu():
             
         if instructionsButtonMain.draw(screen_1) == True:
             print("Instructions") 
-            instructionsScreen4Menu() # switches to the instructions screen
+            instructionsScreen() # switches to the instructions screen
 
         if leaderboardButton.draw(screen_1) == True:
-            print("Leaderboard")   
+            print("Leaderboard")
+            leaderboard(pointsScore, pointsTime)   
             
         if exitButton.draw(screen_1) == True:
             print("EXIT")
@@ -140,12 +141,12 @@ def mainMenu():
 
         pygame.display.update() 
 
-def instructionsScreen4Menu():
+def instructionsScreen():
     while True:
         screen_1.blit(instructionsBG,(0,0))
         if backButton.draw(screen_1) == True:
             print("Back")
-            mainMenu() # switches to the main menu screen
+            break# switches to the main menu screen
 
         
     #event handler
@@ -156,28 +157,39 @@ def instructionsScreen4Menu():
 
         pygame.display.update() 
 
-def instructionsScreen4Game():
-    while True:
-        screen_1.blit(instructionsBG,(0,0))
-        if backButton.draw(screen_1) == True:
-            print("Back")
-            break
-        
-    #event handler
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-                raise SystemExit
+def leaderboardRecord(points, time): 
+    lbPFileA = open("LeaderboardPoints.txt","a")
+    lbPFileA.write(str(points) + "\n")
 
-        pygame.display.update() 
-
-def leaderboardRecord(points): 
-    lbFileA = open("LEADERBOARD.txt","a")
-    lbFileA.write(str(points) +  "\n")
+    lbTFileA = open("LeaderboardTime.txt","a")
+    lbTFileA.write( str(time) +  "\n")    
     
-    lbFileR  = open("LEADERBOARD.txt","r")
-    print(lbFileR)
-                
+    lbPFileA = open("LeaderboardPoints.txt","r")
+    pointsScore = lbPFileA.readlines(10)
+
+    lbTFileA = open("LeaderboardTime.txt","r")
+    pointsTime = lbTFileA.readlines(10)
+    
+    return pointsScore, pointsTime    
+    
+def leaderboard(pointsScore, pointsTime):    
+    while True:
+        screen_1.blit(spaceBG,(0,0))
+        
+        if backButton.draw(screen_1) == True:
+            print("Back")
+            mainMenu()
+    
+        showStat(500, 50, pointsScore, "", "" )
+    
+        # Event handler
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+        pygame.display.update()
+
 def countOne():
     start_time = pygame.time.get_ticks() #gets the inital time when the function is run
     running = True 
@@ -385,8 +397,7 @@ def mainGame():
                         print("hello 4")
                         del enemy
                         print(points)
-            
-            
+                        
         # checks if mouse buttons have been pressed    
         for event in pygame.event.get():        
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -397,8 +408,9 @@ def mainGame():
                 spaceLazer.lDraw(screen_1)
                 lazerList.append(spaceLazer)
                 
-        showScore(750, 25, points)            
-        if playerHP  == 3:
+        showStat(750, 25, points, "Score", "")
+        showStat(750, 50, (time // 1000), "Time Alive", " Seconds " )            
+        if playerHP == 3:
             screen_1.blit(lifes3, (25,25))
 
         elif playerHP == 2:
@@ -421,21 +433,20 @@ def mainGame():
         player.pMovement()
     print("game")
     finalScore = points
-    leaderboardRecord(finalScore)
+    timeAlive = time//1000
+    leaderboardRecord(finalScore,timeAlive)
     
     
     gameover()
-
-    
-    
+   
 def lifeLost():
     while True:
         screen_1.blit(spaceBG,(0,0))
         pygame.time.wait(2000)
         break
 
-def showScore(x, y, points):
-    scoreRender = defultFont.render("Score: " + str(points), True, white)
+def showStat(x, y, stat, text1, text2):
+    scoreRender = defultFont.render(text1 +  ": " + str(stat) + text2 ,True, white)
     screen_1.blit(scoreRender, (x, y))
     
 def gameover():
@@ -470,7 +481,7 @@ def pauseMenu():
             break
         
         if instructionsButtonPause.draw(screen_1) == True:
-            instructionsScreen4Game()
+            instructionsScreen()
             print("Instructions")
 
         if MainMenuButton.draw(screen_1) == True:
