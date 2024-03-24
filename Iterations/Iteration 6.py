@@ -252,15 +252,16 @@ def mainGame():
     
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,3,45,45) #initalises the player
-
-
-    keys = pygame.key.get_pressed()
     
-    if keys[pygame.K_ESCAPE]:
-        pauseMenu()    
     
+    points = 0
     
     while True:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:
+            pauseMenu() 
+            
+               
         clock.tick(60)
         time = pygame.time.get_ticks() - gameStartTime #resets a time at the time when the mainGame loop is run
         screen_1.blit(spaceBG,(0,0))
@@ -272,17 +273,17 @@ def mainGame():
         if difficulty(time) == 1: # for the first 30 seconds this is what is run
             if time%100 == 0 and len(enemyList) < 10: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
-                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45) #instatiates the enemy
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45, 1) #instatiates the enemy
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1]) #spawns in the enemy centred at the players location
                 enemyList.append(newlvl1Enemy) #adds the enemy to the enemy list to keep track of how many enemies are on the screem         
         
         if difficulty(time) == 2:
             if time%100 == 0 and len(enemyList) < 12:
                 pCoords = player.getCoords()
-                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45, 1)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45)
+                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45, 3)
                 newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
                 
                 diff2List = [newlvl1Enemy, newlvl2Enemy] # allows for a choice between either a lvl1 or a lvl2 enemy to be drawn on the screen
@@ -291,13 +292,13 @@ def mainGame():
         if difficulty(time) == 3:
             if time%100 == 0 and len(enemyList) < 15:
                 pCoords = player.getCoords()
-                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45, 1)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45)
+                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45, 3)
                 newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 75, 75)
+                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 75, 75, 5)
                 newlvl3Enemy.eSpawn(pCoords[0],pCoords[1])
                 
                 diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
@@ -306,13 +307,13 @@ def mainGame():
         if difficulty(time) == 4:
             if time%10 == 0 and len(enemyList) < 30:
                 pCoords = player.getCoords()
-                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45)
+                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45, 1)
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45)
+                newlvl2Enemy = classes.enemy(orange, 5, 1, 1, 45, 45, 3)
                 newlvl2Enemy.eSpawn(pCoords[0],pCoords[1])
                 
-                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 75, 75)
+                newlvl3Enemy = classes.enemy(red, 2, 2, 2, 75, 75, 5)
                 newlvl3Enemy.eSpawn(pCoords[0],pCoords[1])
                 
                 diff3List = [newlvl1Enemy, newlvl2Enemy, newlvl3Enemy]
@@ -347,8 +348,7 @@ def mainGame():
                 print("hello up")                
                 enemyList.remove(enemy)
                 del enemy
-                
-                
+                        
         for spaceLazer in lazerList:
             lCentre = (spaceLazer.LxPos, spaceLazer.LyPos)
             spaceLazer.lMove()
@@ -357,22 +357,23 @@ def mainGame():
             for enemy in enemyList:
                 if pygame.Rect.colliderect(lazerRect, enemy):
                     print("Hello 3")
-                    enemy.Ehp = enemy.Ehp - spaceLazer.lDam
-                    if enemy.Ehp <= 0:
+                    enemy.eDamage(spaceLazer.lDam)
+                    print(enemy.Ehp)
+                    lazerList.remove(spaceLazer)
+                    del spaceLazer
+                    if enemy.returnEhp() == 0:
+                        points = points + enemy.ePoints
                         enemyList.remove(enemy)
                         print("hello 4")
                         del enemy
+                        print(points)
             
-                
-                
-
             
         # checks if mouse buttons have been pressed    
         for event in pygame.event.get():        
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mousePos = pygame.mouse.get_pos()
-                clicked = True
-                spaceLazer = classes.spaceLazer(green, 1, 5, 5, 7.5)
+                spaceLazer = classes.spaceLazer(green, 5, 1, 5, 7.5)
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 spaceLazer.lSpawn(pCoords[0],pCoords[1], mousePos[0], mousePos[1])
                 spaceLazer.lDraw(screen_1)

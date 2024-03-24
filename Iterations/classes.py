@@ -41,18 +41,20 @@ class player():
             self.yPos += self.vel
             
 class enemy():
-    def __init__ (self, colour, Evel, Edam, Ehp, Ew, El):
+    def __init__ (self, colour, Evel, Edam, Ehp, Ew, El, ePoints):
         self.colour = colour
         self.Exvel = 0
         self.EyVel = 0
         self.ExPos = 0
         self.EyPos = 0
+        self.ePoints = 0
         
         self.Evel = Evel
         self.Edam = Edam
         self.Ehp = Ehp        
         self.Ew = Ew
         self.El = El
+        self.ePoints = ePoints
         self.rect = None
     
     def eSpawn(self, PxPos, PyPos): 
@@ -81,6 +83,13 @@ class enemy():
     
     def eGetCoords(self):
         return self.ExPos, self.EyPos
+    
+    def eDamage(self, lDam):
+        self.Ehp = self.Ehp - lDam        
+        
+    def returnEhp(self):
+        return self.Ehp
+        
 
 class spaceLazer():
     def __init__(self, colour, lVel, lDam, lCentre, lRadius):
@@ -97,8 +106,8 @@ class spaceLazer():
         self.rect = None
         
     def lSpawn(self, PxPos, PyPos, mouseX, mouseY):
-        self.LxPos = PxPos
-        self.LyPos = PyPos
+        self.LxPos = PxPos + 25
+        self.LyPos = PyPos + 25
         mouseRelXPos = PxPos - mouseX
         mouseRelYPos = PyPos - mouseY
         distance = math.sqrt(mouseRelXPos**2 + mouseRelYPos**2) 
