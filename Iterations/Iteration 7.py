@@ -160,18 +160,23 @@ def instructionsScreen():
 
         pygame.display.update() 
 
-def leaderboardRecord(points, time): 
+def leaderboardRecord(points, time, ): 
+    lbPFileR = open("LeaderboardPoints.txt","r")
+    
+    lbTFileR = open("LeaderboardTime.txt","r")    
+    
     lbPFileA = open("LeaderboardPoints.txt","a")
-    lbPFileA.write(str(points) + "\n")
-
     lbTFileA = open("LeaderboardTime.txt","a")
-    lbTFileA.write(str(time) +  "\n")    
+
+    lbTFileA.write(str(time) +  "\n")
+    lbPFileA.write(str(points) + "\n")
     
 def leaderboard():
     running = True    
     lbPFileA = open("LeaderboardPoints.txt","r")
     lbTFileA = open("LeaderboardTime.txt","r")
 
+    # Seperates the lines in thhe text file
     pointsScore1 = lbPFileA.readline(1)
     pointsScore2 = lbPFileA.readline(2)
     pointsScore3 = lbPFileA.readline(3)
@@ -194,8 +199,9 @@ def leaderboard():
     pointsTime9 = lbTFileA.readline(9)
     pointsTime10 = lbTFileA.readline(10)
     
+    
+    # puts each line into a array to be easily accessed
     pointsScoreList = [pointsScore1, pointsScore2, pointsScore3, pointsScore4, pointsScore5, pointsScore6, pointsScore7, pointsScore8, pointsScore9, pointsScore10]
-
     pointsTimeList = [pointsTime1, pointsTime2, pointsTime3, pointsTime4, pointsTime5, pointsTime6, pointsTime7, pointsTime8, pointsTime9, pointsTime10]
     
     while running == True:
@@ -204,8 +210,8 @@ def leaderboard():
         if backButton.draw(screen_1) == True:
             running = False
     
-        showStat(250, 50, "", "SCORE HIGHSCORE:", "" )
-        showStat(250, 100 , pointsScoreList[0], "", "" )
+        showStat(250, 50, "", "|--|SCORE HIGHSCORE|--|", "" )
+        showStat(250, 100, pointsScoreList[0], "", "" )
         showStat(250, 150, pointsScoreList[1], "", "" )
         showStat(250, 200, pointsScoreList[2], "", "" )
         showStat(250, 250, pointsScoreList[3], "", "" )
@@ -216,7 +222,7 @@ def leaderboard():
         showStat(250, 500, pointsScoreList[8], "", "" )
         showStat(250, 550, pointsScoreList[9], "", "" )
         
-        showStat(750, 50, "", "TIME HIGHSCORE:", "" )
+        showStat(750, 50, "", "|--|TIME HIGHSCORE|--|", "" )
         showStat(750, 100 , pointsTimeList[0], "", "" )
         showStat(750, 150, pointsTimeList[1], "", "" )
         showStat(750, 200, pointsTimeList[2], "", "" )
@@ -478,8 +484,15 @@ def mainGame():
                     
         pygame.display.update()
         player.pMovement()
-    
+
     print("game")
+    
+    
+#    initals = input("Input your initals: ")
+#    showStat(500, 100, initals, "", "")
+#    if len(initals) == 3:
+#        return initals
+        
     finalScore = points # creates final score
     timeAlive = time//1000 # shows seconds rather than milliseconnds
     leaderboardRecord(finalScore,timeAlive) # allows types of score to be shown
@@ -503,12 +516,6 @@ def showStat(x, y, stat, text1, text2):
 def gameover():
     start_time = pygame.time.get_ticks()
     running = True
-    
-    lbPFileA = open("LeaderboardPoints.txt","r")
-    pointsScore = lbPFileA.readlines(10)
-
-    lbTFileA = open("LeaderboardTime.txt","r")
-    pointsTime = lbTFileA.readlines(10)
     
     while running == True:
         screen_1.blit(spaceBG,(0,0))
