@@ -27,7 +27,7 @@ height = 750
 screen_1 = pygame.display.set_mode((width,height))
 pygame.display.set_caption("Space Shooter")
 
-#buttons Images
+
 #Menu Images
 startImage = pygame.image.load("Used Images/Strat Button.png").convert_alpha() 
 instructionsImage = pygame.image.load("Used Images/Instructions_Button.png").convert_alpha()
@@ -88,8 +88,8 @@ lifes2 = pygame.transform.scale(twoLifesImage, (int(width * .2), (int(height * .
 lifes1 = pygame.transform.scale(oneLifeImage, (int(width * .2), (int(height * .125))))
 
 #Fonts
-defultFont = pygame.font.Font("freesansbold.ttf", 16)
-
+defultFont4Game = pygame.font.Font("freesansbold.ttf", 16)
+defultFont4Leaderboard = pygame.font.Font("freesansbold.ttf", 32)
 
 
 def titleScreen():
@@ -112,6 +112,13 @@ def titleScreen():
         pygame.display.update()
 
 def mainMenu():
+    
+    lbPFileA = open("LeaderboardPoints.txt","r")
+    pointsScore = lbPFileA.readlines(10)
+
+    lbTFileA = open("LeaderboardTime.txt","r")
+    pointsTime = lbTFileA.readlines(10)
+    
     while True:        
         screen_1.blit(spaceBG,(0,0))
         screen_1.blit(title,(121, 15))
@@ -119,7 +126,7 @@ def mainMenu():
         
         if startButton.draw(screen_1) == True:
             print("START")
-            countOne() # remember to changgeback to countOne()
+            countOne() 
             
         if instructionsButtonMain.draw(screen_1) == True:
             print("Instructions") 
@@ -127,7 +134,8 @@ def mainMenu():
 
         if leaderboardButton.draw(screen_1) == True:
             print("Leaderboard")
-            leaderboard(pointsScore, pointsTime)   
+            leaderboard(pointsScore, pointsTime)
+
             
         if exitButton.draw(screen_1) == True:
             print("EXIT")
@@ -147,7 +155,6 @@ def instructionsScreen():
         if backButton.draw(screen_1) == True:
             print("Back")
             break# switches to the main menu screen
-
         
     #event handler
         for event in pygame.event.get():
@@ -162,25 +169,68 @@ def leaderboardRecord(points, time):
     lbPFileA.write(str(points) + "\n")
 
     lbTFileA = open("LeaderboardTime.txt","a")
-    lbTFileA.write( str(time) +  "\n")    
+    lbTFileA.write(str(time) +  "\n")    
     
+def leaderboard(pointsScore, pointsTime):
+    running = True    
     lbPFileA = open("LeaderboardPoints.txt","r")
-    pointsScore = lbPFileA.readlines(10)
-
     lbTFileA = open("LeaderboardTime.txt","r")
-    pointsTime = lbTFileA.readlines(10)
+
+    pointsScore1 = lbPFileA.readline(1)
+    pointsScore2 = lbPFileA.readline(2)
+    pointsScore3 = lbPFileA.readline(3)
+    pointsScore4 = lbPFileA.readline(4)
+    pointsScore5 = lbPFileA.readline(5)
+    pointsScore6 = lbPFileA.readline(6)
+    pointsScore7 = lbPFileA.readline(7)
+    pointsScore8 = lbPFileA.readline(8)
+    pointsScore9 = lbPFileA.readline(9)
+    pointsScore10 = lbPFileA.readline(10)
     
-    return pointsScore, pointsTime    
     
-def leaderboard(pointsScore, pointsTime):    
-    while True:
+    pointsScoreList = [pointsScore1, pointsScore2, pointsScore3, pointsScore4, pointsScore5, pointsScore6, pointsScore7, pointsScore8, pointsScore9, pointsScore10]
+
+    pointsTime1 = lbPFileA.readline(1)
+    pointsTime2 = lbPFileA.readline(2)
+    pointsTime3 = lbPFileA.readline(3)
+    pointsTime4 = lbPFileA.readline(4)
+    pointsTime5 = lbPFileA.readline(5)
+    pointsTime6 = lbPFileA.readline(6)
+    pointsTime7 = lbPFileA.readline(7)
+    pointsTime8 = lbPFileA.readline(8)
+    pointsTime9 = lbPFileA.readline(9)
+    pointsTime10 = lbPFileA.readline(10)
+    
+    pointsTimeList = [pointsTime1, pointsTime2, pointsTime3, pointsTime4, pointsTime5, pointsTime6, pointsTime7, pointsTime8, pointsTime9, pointsTime10]
+    
+    while running == True:
         screen_1.blit(spaceBG,(0,0))
         
         if backButton.draw(screen_1) == True:
-            print("Back")
-            mainMenu()
+            running = False
     
-        showStat(500, 50, pointsScore, "", "" )
+        showStat(250, 50 , pointsScoreList[0], "", "" )
+        showStat(250, 100, pointsScoreList[1], "", "" )
+        showStat(250, 150, pointsScoreList[2], "", "" )
+        showStat(250, 200, pointsScoreList[3], "", "" )
+        showStat(250, 250, pointsScoreList[4], "", "" )
+        showStat(250, 300, pointsScoreList[5], "", "" )
+        showStat(250, 350, pointsScoreList[6], "", "" )
+        showStat(250, 400, pointsScoreList[7], "", "" )
+        showStat(250, 450, pointsScoreList[8], "", "" )
+        showStat(250, 500, pointsScoreList[9], "", "" )
+        
+        showStat(750, 50 , pointsTimeList[0], "", "" )
+        showStat(750, 100, pointsTimeList[1], "", "" )
+        showStat(750, 150, pointsTimeList[2], "", "" )
+        showStat(750, 200, pointsTimeList[3], "", "" )
+        showStat(750, 250, pointsTimeList[4], "", "" )
+        showStat(750, 300, pointsTimeList[5], "", "" )
+        showStat(750, 350, pointsTimeList[6], "", "" )
+        showStat(750, 400, pointsTimeList[7], "", "" )
+        showStat(750, 450, pointsTimeList[8], "", "" )
+        showStat(750, 500, pointsTimeList[9], "", "" )
+        
     
         # Event handler
         for event in pygame.event.get():
@@ -189,6 +239,9 @@ def leaderboard(pointsScore, pointsTime):
                 raise SystemExit
 
         pygame.display.update()
+    
+        
+        
 
 def countOne():
     start_time = pygame.time.get_ticks() #gets the inital time when the function is run
@@ -408,8 +461,8 @@ def mainGame():
                 spaceLazer.lDraw(screen_1)
                 lazerList.append(spaceLazer)
                 
-        showStat(750, 25, points, "Score", "")
-        showStat(750, 50, (time // 1000), "Time Alive", " Seconds " )            
+        showStat(750, 25, points, "Score: ", "")
+        showStat(750, 50, (time // 1000), "Time Alive: ", " Seconds " )            
         if playerHP == 3:
             screen_1.blit(lifes3, (25,25))
 
@@ -431,10 +484,11 @@ def mainGame():
                     
         pygame.display.update()
         player.pMovement()
+    
     print("game")
-    finalScore = points
-    timeAlive = time//1000
-    leaderboardRecord(finalScore,timeAlive)
+    finalScore = points # creates final score
+    timeAlive = time//1000 # shows seconds rather than milliseconnds
+    leaderboardRecord(finalScore,timeAlive) # allows types of score to be shown
     
     
     gameover()
@@ -446,21 +500,30 @@ def lifeLost():
         break
 
 def showStat(x, y, stat, text1, text2):
-    scoreRender = defultFont.render(text1 +  ": " + str(stat) + text2 ,True, white)
-    screen_1.blit(scoreRender, (x, y))
+    statRenderMG = defultFont4Game.render(text1 + str(stat) + text2 ,True, white)
+    screen_1.blit(statRenderMG, (x, y))
+    
+    statRenderLB = defultFont4Game.render(text1 + str(stat) + text2 ,True, white)
+    screen_1.blit(statRenderLB, (x, y))
     
 def gameover():
     start_time = pygame.time.get_ticks()
-    run = True
+    running = True
     
-    while run == True:
+    lbPFileA = open("LeaderboardPoints.txt","r")
+    pointsScore = lbPFileA.readlines(10)
+
+    lbTFileA = open("LeaderboardTime.txt","r")
+    pointsTime = lbTFileA.readlines(10)
+    
+    while running == True:
         screen_1.blit(spaceBG,(0,0))
         
         screen_1.blit(Gameover, (250, 250)) # blits gameover onto the screen
         
         current_time = pygame.time.get_ticks()
         if current_time - start_time >= 5000:  
-            run = False
+            running = False
             
         #event handler
         for event in pygame.event.get():
@@ -470,6 +533,7 @@ def gameover():
         pygame.display.update()
     
     print("anything")
+    leaderboard(pointsScore, pointsTime)
                   
 def pauseMenu():
     while True: 
