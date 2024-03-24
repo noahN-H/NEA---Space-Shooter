@@ -113,11 +113,7 @@ def titleScreen():
 
 def mainMenu():
     
-    lbPFileA = open("LeaderboardPoints.txt","r")
-    pointsScore = lbPFileA.readlines(10)
 
-    lbTFileA = open("LeaderboardTime.txt","r")
-    pointsTime = lbTFileA.readlines(10)
     
     while True:        
         screen_1.blit(spaceBG,(0,0))
@@ -134,7 +130,7 @@ def mainMenu():
 
         if leaderboardButton.draw(screen_1) == True:
             print("Leaderboard")
-            leaderboard(pointsScore, pointsTime)
+            leaderboard()
 
             
         if exitButton.draw(screen_1) == True:
@@ -171,7 +167,7 @@ def leaderboardRecord(points, time):
     lbTFileA = open("LeaderboardTime.txt","a")
     lbTFileA.write(str(time) +  "\n")    
     
-def leaderboard(pointsScore, pointsTime):
+def leaderboard():
     running = True    
     lbPFileA = open("LeaderboardPoints.txt","r")
     lbTFileA = open("LeaderboardTime.txt","r")
@@ -187,20 +183,19 @@ def leaderboard(pointsScore, pointsTime):
     pointsScore9 = lbPFileA.readline(9)
     pointsScore10 = lbPFileA.readline(10)
     
+    pointsTime1 = lbTFileA.readline(1)
+    pointsTime2 = lbTFileA.readline(2)
+    pointsTime3 = lbTFileA.readline(3)
+    pointsTime4 = lbTFileA.readline(4)
+    pointsTime5 = lbTFileA.readline(5)
+    pointsTime6 = lbTFileA.readline(6)
+    pointsTime7 = lbTFileA.readline(7)
+    pointsTime8 = lbTFileA.readline(8)
+    pointsTime9 = lbTFileA.readline(9)
+    pointsTime10 = lbTFileA.readline(10)
     
     pointsScoreList = [pointsScore1, pointsScore2, pointsScore3, pointsScore4, pointsScore5, pointsScore6, pointsScore7, pointsScore8, pointsScore9, pointsScore10]
 
-    pointsTime1 = lbPFileA.readline(1)
-    pointsTime2 = lbPFileA.readline(2)
-    pointsTime3 = lbPFileA.readline(3)
-    pointsTime4 = lbPFileA.readline(4)
-    pointsTime5 = lbPFileA.readline(5)
-    pointsTime6 = lbPFileA.readline(6)
-    pointsTime7 = lbPFileA.readline(7)
-    pointsTime8 = lbPFileA.readline(8)
-    pointsTime9 = lbPFileA.readline(9)
-    pointsTime10 = lbPFileA.readline(10)
-    
     pointsTimeList = [pointsTime1, pointsTime2, pointsTime3, pointsTime4, pointsTime5, pointsTime6, pointsTime7, pointsTime8, pointsTime9, pointsTime10]
     
     while running == True:
@@ -209,27 +204,29 @@ def leaderboard(pointsScore, pointsTime):
         if backButton.draw(screen_1) == True:
             running = False
     
-        showStat(250, 50 , pointsScoreList[0], "", "" )
-        showStat(250, 100, pointsScoreList[1], "", "" )
-        showStat(250, 150, pointsScoreList[2], "", "" )
-        showStat(250, 200, pointsScoreList[3], "", "" )
-        showStat(250, 250, pointsScoreList[4], "", "" )
-        showStat(250, 300, pointsScoreList[5], "", "" )
-        showStat(250, 350, pointsScoreList[6], "", "" )
-        showStat(250, 400, pointsScoreList[7], "", "" )
-        showStat(250, 450, pointsScoreList[8], "", "" )
-        showStat(250, 500, pointsScoreList[9], "", "" )
+        showStat(250, 50, "", "SCORE HIGHSCORE:", "" )
+        showStat(250, 100 , pointsScoreList[0], "", "" )
+        showStat(250, 150, pointsScoreList[1], "", "" )
+        showStat(250, 200, pointsScoreList[2], "", "" )
+        showStat(250, 250, pointsScoreList[3], "", "" )
+        showStat(250, 300, pointsScoreList[4], "", "" )
+        showStat(250, 350, pointsScoreList[5], "", "" )
+        showStat(250, 400, pointsScoreList[6], "", "" )
+        showStat(250, 450, pointsScoreList[7], "", "" )
+        showStat(250, 500, pointsScoreList[8], "", "" )
+        showStat(250, 550, pointsScoreList[9], "", "" )
         
-        showStat(750, 50 , pointsTimeList[0], "", "" )
-        showStat(750, 100, pointsTimeList[1], "", "" )
-        showStat(750, 150, pointsTimeList[2], "", "" )
-        showStat(750, 200, pointsTimeList[3], "", "" )
-        showStat(750, 250, pointsTimeList[4], "", "" )
-        showStat(750, 300, pointsTimeList[5], "", "" )
-        showStat(750, 350, pointsTimeList[6], "", "" )
-        showStat(750, 400, pointsTimeList[7], "", "" )
-        showStat(750, 450, pointsTimeList[8], "", "" )
-        showStat(750, 500, pointsTimeList[9], "", "" )
+        showStat(750, 50, "", "TIME HIGHSCORE:", "" )
+        showStat(750, 100 , pointsTimeList[0], "", "" )
+        showStat(750, 150, pointsTimeList[1], "", "" )
+        showStat(750, 200, pointsTimeList[2], "", "" )
+        showStat(750, 250, pointsTimeList[3], "", "" )
+        showStat(750, 300, pointsTimeList[4], "", "" )
+        showStat(750, 350, pointsTimeList[5], "", "" )
+        showStat(750, 400, pointsTimeList[6], "", "" )
+        showStat(750, 450, pointsTimeList[7], "", "" )
+        showStat(750, 500, pointsTimeList[8], "", "" )
+        showStat(750, 550, pointsTimeList[9], "", "" )
         
     
         # Event handler
@@ -238,10 +235,7 @@ def leaderboard(pointsScore, pointsTime):
                 pygame.quit()
                 raise SystemExit
 
-        pygame.display.update()
-    
-        
-        
+        pygame.display.update()        
 
 def countOne():
     start_time = pygame.time.get_ticks() #gets the inital time when the function is run
@@ -533,7 +527,7 @@ def gameover():
         pygame.display.update()
     
     print("anything")
-    leaderboard(pointsScore, pointsTime)
+    leaderboard()
                   
 def pauseMenu():
     while True: 
