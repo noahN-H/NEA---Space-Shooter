@@ -125,7 +125,6 @@ def mainMenu():
             print("Instructions") 
             instructionsScreen4Menu() # switches to the instructions screen
 
-        
         if leaderboardButton.draw(screen_1) == True:
             print("Leaderboard")   
             
@@ -172,28 +171,25 @@ def instructionsScreen4Game():
 
         pygame.display.update() 
 
-def leaderboard(points): 
+def leaderboardRecord(points): 
     lbFileA = open("LEADERBOARD.txt","a")
-    lbFileA.write(str(points))
+    lbFileA.write(str(points) +  "\n")
     
     lbFileR  = open("LEADERBOARD.txt","r")
     print(lbFileR)
-            
-
-    
-
-    
+                
 def countOne():
     start_time = pygame.time.get_ticks() #gets the inital time when the function is run
-    while True:
+    running = True 
+    while running == True:
         screen_1.blit(spaceBG,(0,0))
         screen_1.blit(number3, (250, 15))
-        pygame.display.update()
+
         
             
         current_time = pygame.time.get_ticks() # gets the time of the current time a few milliseconds after the last time
         if current_time - start_time >= 1000: # checks if one second has passed since the function was first run. it does this by taking the current time variable and minusing the time when the function was first run
-            countTwo()
+            running = False
                             
             # Event handler
         for event in pygame.event.get():
@@ -203,34 +199,40 @@ def countOne():
 
         pygame.display.update()        
 
+    countTwo()  
+
 def countTwo():
     start_time = pygame.time.get_ticks()
-    while True:
+    running = True
+    while running == True:
         screen_1.blit(spaceBG,(0,0))
         screen_1.blit(number2, (250,15)) 
-        pygame.display.update()
+
         
             
         current_time = pygame.time.get_ticks()
         if current_time - start_time >= 1000:  
-            countThree()  
-            
+            running =  False
             # Event handler
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
+        pygame.display.update()      
 
+    countThree()
+          
 def countThree():
     start_time = pygame.time.get_ticks()
-    while True:
+    running = True
+    while running == True:
         screen_1.blit(spaceBG,(0,0))
         screen_1.blit(number1, (250, 15))
-        pygame.display.update()
         
         current_time = pygame.time.get_ticks()
         if current_time - start_time >= 1000:  
-            mainGame() 
+            running = False
+            
             
             # Event handler
         for event in pygame.event.get():
@@ -239,6 +241,7 @@ def countThree():
                 raise SystemExit
 
         pygame.display.update()        
+    mainGame() 
 
 def difficulty(time):
     difficulty = 0
@@ -262,7 +265,7 @@ def mainGame():
     playerHP = 3
     enemyList = []
     lazerList=[]
-    clicked = False
+
     
     gameStartTime = pygame.time.get_ticks()     
     player = classes.player(500,375,5,3,45,45) #initalises the player
@@ -289,7 +292,7 @@ def mainGame():
         if difficulty(time) == 1: # for the first 30 seconds this is what is run
             if time%100 == 0 and len(enemyList) < 10: #checks if 5 seconds has passes and there is less than 5 enemies on the screen
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
-                newlvl1Enemy = classes.enemy(yellow, 3, 1, 1, 45, 45, 1) #instatiates the enemy
+                newlvl1Enemy = classes.enemy(yellow, 3, 5, 1, 45, 45, 1) #instatiates the enemy
                 newlvl1Enemy.eSpawn(pCoords[0],pCoords[1]) #spawns in the enemy centred at the players location
                 enemyList.append(newlvl1Enemy) #adds the enemy to the enemy list to keep track of how many enemies are on the screem         
         
@@ -406,10 +409,8 @@ def mainGame():
             screen_1.blit(lifes1, (25,25)) 
             
         elif playerHP <= 0:
-            gameoverTimer = pygame.time.wait(1000)
-            if gameoverTimer > 1000:
-                running = False
-                
+            pygame.time.wait(1000)
+            running = False
                 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -418,6 +419,11 @@ def mainGame():
                     
         pygame.display.update()
         player.pMovement()
+    print("game")
+    finalScore = points
+    leaderboardRecord(finalScore)
+    
+    
     gameover()
 
     
@@ -434,20 +440,22 @@ def showScore(x, y, points):
     
 def gameover():
     start_time = pygame.time.get_ticks()
-    running = True
-    while running == True:
+    run = True
+    
+    while run == True:
         screen_1.blit(spaceBG,(0,0))
         
         screen_1.blit(Gameover, (250, 250)) # blits gameover onto the screen
         
         current_time = pygame.time.get_ticks()
         if current_time - start_time >= 5000:  
-            running ==  False
+            run = False
+            
         #event handler
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 raise SystemExit
-            
+                
         pygame.display.update()
     
     print("anything")
@@ -483,5 +491,5 @@ def pauseMenu():
 
 run = True
 while run:
-    mainGame()
+    mainMenu()
 pygame.quit() 
