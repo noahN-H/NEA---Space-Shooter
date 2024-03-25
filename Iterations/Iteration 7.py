@@ -121,20 +121,20 @@ def mainMenu():
         
         
         if startButton.draw(screen_1) == True:
-            print("START")
+
             countOne() 
             
         if instructionsButtonMain.draw(screen_1) == True:
-            print("Instructions") 
+
             instructionsScreen() # switches to the instructions screen
 
         if leaderboardButton.draw(screen_1) == True:
-            print("Leaderboard")
+
             leaderboard()
 
             
         if exitButton.draw(screen_1) == True:
-            print("EXIT")
+
             raise SystemExit
                         
     #event handler
@@ -149,7 +149,7 @@ def instructionsScreen():
     while True:
         screen_1.blit(instructionsBG,(0,0))
         if backButton.draw(screen_1) == True:
-            print("Back")
+
             break# switches to the main menu screen
         
     #event handler
@@ -160,10 +160,66 @@ def instructionsScreen():
 
         pygame.display.update() 
 
-def leaderboardRecord(points, time, ): 
+def leaderboardRecord(points, time): 
     lbPFileR = open("LeaderboardPoints.txt","r")
     
+    insertionlbP = lbPFileR.readlines(10)
+    cleanedUplbP = []
+    for score in insertionlbP:
+        score = score.strip("\n")
+        cleanedUplbP.append(int(score))
+    
+    orderedpointsScore = []
+    if len(cleanedUplbP) == 0:
+        orderedpointsScore.append(points)
+    else:
+        counter = len(cleanedUplbP) - 1
+        hasAdded = False
+        while len(orderedpointsScore) < 10 and counter > 0:
+            print(counter)
+        
+            orderedpointsScore.append(str(insertionlbP[counter]) + "\n")
+            counter -= 1
+            if int(insertionlbP[counter]) < int(points) and not hasAdded:
+                orderedpointsScore.append(str(points) + "\n")
+                hasAdded = True
+    lbPFileR.close()
+    lbPFileR = open("LeaderboardPoints.txt","w")
+    for point in orderedpointsScore:
+        print(point)
+        lbPFileR.write(str(point))
+    lbPFileR.close()
+     
+    
     lbTFileR = open("LeaderboardTime.txt","r")    
+    insertionlbT = lbTFileR.readlines(10)
+    cleanedUplbT = []
+    for score in insertionlbT:
+        score = score.strip("\n")
+        print(score)
+        cleanedUplbT.append(int(score))
+    
+    orderedTimeScore = []
+    if len(cleanedUplbP) == 0:
+        orderedTimeScore.append(time)
+    else:
+        counter = len(cleanedUplbP) - 1
+        hasAdded = False
+        while len(orderedTimeScore) < 10 and counter > 0:
+            
+            orderedTimeScore.append(str(insertionlbT[counter]) + "\n")
+            counter -= 1
+            if int(insertionlbT[counter]) < int(time) and not hasAdded:
+                orderedTimeScore.append(str(time) + "\n")
+                hasAdded = True
+
+    lbTFileR.close()
+    lbTFileR = open("LeaderboardPoints.txt","w")
+    for point in orderedTimeScore:
+        lbTFileR.write(str(time))
+    lbTFileR.close()
+         
+
     
     lbPFileA = open("LeaderboardPoints.txt","a")
     lbTFileA = open("LeaderboardTime.txt","a")
@@ -203,7 +259,8 @@ def leaderboard():
     # puts each line into a array to be easily accessed
     pointsScoreList = [pointsScore1, pointsScore2, pointsScore3, pointsScore4, pointsScore5, pointsScore6, pointsScore7, pointsScore8, pointsScore9, pointsScore10]
     pointsTimeList = [pointsTime1, pointsTime2, pointsTime3, pointsTime4, pointsTime5, pointsTime6, pointsTime7, pointsTime8, pointsTime9, pointsTime10]
-    
+    cleanedPointsScoreList = pointsScoreList
+    cleanedTimeScoreList = pointsTimeList
     while running == True:
         screen_1.blit(spaceBG,(0,0))
         
@@ -211,28 +268,28 @@ def leaderboard():
             running = False
     
         showStat(250, 50, "", "|--|SCORE HIGHSCORE|--|", "" )
-        showStat(250, 100, pointsScoreList[0], "", "" )
-        showStat(250, 150, pointsScoreList[1], "", "" )
-        showStat(250, 200, pointsScoreList[2], "", "" )
-        showStat(250, 250, pointsScoreList[3], "", "" )
-        showStat(250, 300, pointsScoreList[4], "", "" )
-        showStat(250, 350, pointsScoreList[5], "", "" )
-        showStat(250, 400, pointsScoreList[6], "", "" )
-        showStat(250, 450, pointsScoreList[7], "", "" )
-        showStat(250, 500, pointsScoreList[8], "", "" )
-        showStat(250, 550, pointsScoreList[9], "", "" )
+        showStat(250, 100, cleanedPointsScoreList[0], "", "" )
+        showStat(250, 150, cleanedPointsScoreList[1], "", "" )
+        showStat(250, 200, cleanedPointsScoreList[2], "", "" )
+        showStat(250, 250, cleanedPointsScoreList[3], "", "" )
+        showStat(250, 300, cleanedPointsScoreList[4], "", "" )
+        showStat(250, 350, cleanedPointsScoreList[5], "", "" )
+        showStat(250, 400, cleanedPointsScoreList[6], "", "" )
+        showStat(250, 450, cleanedPointsScoreList[7], "", "" )
+        showStat(250, 500, cleanedPointsScoreList[8], "", "" )
+        showStat(250, 550, cleanedPointsScoreList[9], "", "" )
         
-        showStat(750, 50, "", "|--|TIME HIGHSCORE|--|", "" )
-        showStat(750, 100 , pointsTimeList[0], "", "" )
-        showStat(750, 150, pointsTimeList[1], "", "" )
-        showStat(750, 200, pointsTimeList[2], "", "" )
-        showStat(750, 250, pointsTimeList[3], "", "" )
-        showStat(750, 300, pointsTimeList[4], "", "" )
-        showStat(750, 350, pointsTimeList[5], "", "" )
-        showStat(750, 400, pointsTimeList[6], "", "" )
-        showStat(750, 450, pointsTimeList[7], "", "" )
-        showStat(750, 500, pointsTimeList[8], "", "" )
-        showStat(750, 550, pointsTimeList[9], "", "" )
+        showStat(750, 50, "", ".__.TIME HIGHSCORE.__.", "" )
+        showStat(750, 100 ,cleanedTimeScoreList[0], "", "" )
+        showStat(750, 150, cleanedTimeScoreList[1], "", "" )
+        showStat(750, 200, cleanedTimeScoreList[2], "", "" )
+        showStat(750, 250, cleanedTimeScoreList[3], "", "" )
+        showStat(750, 300, cleanedTimeScoreList[4], "", "" )
+        showStat(750, 350, cleanedTimeScoreList[5], "", "" )
+        showStat(750, 400, cleanedTimeScoreList[6], "", "" )
+        showStat(750, 450, cleanedTimeScoreList[7], "", "" )
+        showStat(750, 500, cleanedTimeScoreList[8], "", "" )
+        showStat(750, 550, cleanedTimeScoreList[9], "", "" )
         
     
         # Event handler
@@ -407,13 +464,13 @@ def mainGame():
             enemy.eDraw(screen_1)
             enemy.eMove()
             if pygame.Rect.colliderect(playerRect, enemy):
-                print("Hello 1")
+
                 playerHP = playerHP - enemy.Edam
                 enemyList.remove(enemy)
                 pygame.time.wait(2000)
                 enemyList.clear()
                 player.updateCoords(500, 375)
-                print("hello 2")
+
   
                 
             if enemy.eGetCoords()[0] >= 1000:
@@ -440,14 +497,14 @@ def mainGame():
             
             for enemy in enemyList:
                 if pygame.Rect.colliderect(lazerRect, enemy):
-                    print("Hello 3")
+
                     enemy.eDamage(spaceLazer.lDam)
                     lazerList.remove(spaceLazer)
                     del spaceLazer
                     if enemy.returnEhp() == 0:
                         points = points + enemy.ePoints
                         enemyList.remove(enemy)
-                        print("hello 4")
+
                         del enemy
                         print(points)
                         
@@ -485,7 +542,7 @@ def mainGame():
         pygame.display.update()
         player.pMovement()
 
-    print("game")
+
     
     
 #    initals = input("Input your initals: ")
@@ -533,7 +590,7 @@ def gameover():
                 
         pygame.display.update()
     
-    print("anything")
+
     leaderboard()
                   
 def pauseMenu():
@@ -542,19 +599,19 @@ def pauseMenu():
         screen_1.blit(spaceBG,(0,0))
         
         if resumeButton.draw(screen_1) == True:
-            print("Resume")
+
             break
         
         if instructionsButtonPause.draw(screen_1) == True:
             instructionsScreen()
-            print("Instructions")
+
 
         if MainMenuButton.draw(screen_1) == True:
             mainMenu()
-            print("Main Menu")            
+         
             
         if exitButton.draw(screen_1) == True:
-            print("EXIT")
+
             raise SystemExit
         
     #event handler
