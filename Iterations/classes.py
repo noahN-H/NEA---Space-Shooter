@@ -168,7 +168,4 @@ class button():
         
         #Draw button on screen   
         surface.blit(self.image, (self.rect.x, self.rect.y))
-        return action
-
-    
-        
+        return action   

@@ -1,7 +1,7 @@
 import pygame
 import classes
 import random
-import os
+
 
 
 
@@ -163,11 +163,11 @@ def instructionsScreen():
 def leaderboardRecord(points, time): 
     lbPFileR = open("LeaderboardPoints.txt","r")
     
-    insertionlbP = lbPFileR.readlines(10)
+    insertionlbP = lbPFileR.readlines(10) # reads the first 10 lines of the file
     cleanedUplbP = []
     for score in insertionlbP:
-        score = score.strip("\n")
-        cleanedUplbP.append(int(score))
+        score = score.strip("\n") # at the end of each line when it is printed it prints \n so it removes the \n
+        cleanedUplbP.append(int(score)) # 
     
     orderedpointsScore = []
     if len(cleanedUplbP) == 0:
@@ -267,7 +267,7 @@ def leaderboard():
         if backButton.draw(screen_1) == True:
             running = False
     
-        showStat(250, 50, "", "|--|SCORE HIGHSCORE|--|", "" )
+        showStat(250, 50, "", ".__.SCORE HIGHSCORE.__.", "" )
         showStat(250, 100, cleanedPointsScoreList[0], "", "" )
         showStat(250, 150, cleanedPointsScoreList[1], "", "" )
         showStat(250, 200, cleanedPointsScoreList[2], "", "" )
@@ -512,7 +512,7 @@ def mainGame():
         for event in pygame.event.get():        
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mousePos = pygame.mouse.get_pos()
-                spaceLazer = classes.spaceLazer(green, 5, 1, 5, 7.5)
+                spaceLazer = classes.spaceLazer(green, 10, 1, 5, 7.5)
                 pCoords = player.getCoords() #gets the players coordinates at those 5 seconds
                 spaceLazer.lSpawn(pCoords[0],pCoords[1], mousePos[0], mousePos[1])
                 spaceLazer.lDraw(screen_1)
@@ -552,7 +552,7 @@ def mainGame():
         
     finalScore = points # creates final score
     timeAlive = time//1000 # shows seconds rather than milliseconnds
-    leaderboardRecord(finalScore,timeAlive) # allows types of score to be shown
+#    leaderboardRecord(finalScore,timeAlive) # allows types of score to be shown
     
     
     gameover()
@@ -591,7 +591,7 @@ def gameover():
         pygame.display.update()
     
 
-    leaderboard()
+#    leaderboard()
                   
 def pauseMenu():
     while True: 
@@ -624,5 +624,5 @@ def pauseMenu():
 
 run = True
 while run:
-    mainMenu()
+    titleScreen()
 pygame.quit() 
